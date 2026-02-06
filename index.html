@@ -8,7 +8,7 @@
 
   <style>
     :root{
-      /* Pulled from Archer logo */
+      /* Archer logo accents */
       --archer-blue: #01017C;
       --archer-gray: #7A7A7D;
 
@@ -75,10 +75,7 @@
       font-size: .95rem;
     }
 
-    .grid{
-      display:grid;
-      gap: 12px;
-    }
+    .grid{ display:grid; gap: 12px; }
 
     label{
       display:block;
@@ -150,7 +147,6 @@
       vertical-align: middle;
     }
 
-    /* Receipt capture */
     .photoBox{
       border: 1px dashed rgba(1,1,124,.35);
       border-radius: 14px;
@@ -190,10 +186,7 @@
       font-weight: 600;
     }
 
-    .btnGhost{
-      background: #fff;
-      color: var(--archer-blue);
-    }
+    .btnGhost{ background: #fff; color: var(--archer-blue); }
 
     .pillGroup{
       display:flex;
@@ -221,10 +214,7 @@
       box-shadow: 0 0 0 4px rgba(1,1,124,.10);
     }
 
-    .preview{
-      margin-top: 10px;
-      display:none;
-    }
+    .preview{ margin-top: 10px; display:none; }
     .preview img{
       width: 100%;
       height: auto;
@@ -277,13 +267,16 @@
 <body>
   <main class="wrap">
     <section class="brand" aria-label="Archer Civil Construction LLC">
-      <!-- Put archer_logo.png in the same folder as this HTML, or update the src to your hosted path -->
+      <!-- Put archer_logo.png in the same folder as this HTML, or update the src to a hosted path -->
       <img class="logo" src="archer_logo.png" alt="Archer Civil Construction LLC logo">
     </section>
 
     <section class="card" id="formCard">
-      <p class="title"><strong>Expense submission</strong></p>
-      <p class="subtitle">Take a receipt photo, pick a few items, and submit.</p>
+      <!-- Header block (will be hidden on success) -->
+      <div id="formHeader">
+        <p class="title"><strong>Expense submission</strong></p>
+        <p class="subtitle">Take a receipt photo, pick a few items, and submit.</p>
+      </div>
 
       <form id="expenseForm" class="grid" novalidate>
         <!-- Receipt Photo -->
@@ -320,7 +313,6 @@
             </label>
             <select id="project" name="project" required>
               <option value="" selected disabled>Select a project</option>
-              <!-- Keep this list short (Active Projects). Add/edit as needed. -->
               <option value="Office / Non-Job">Office / Non-Job</option>
               <option value="06-1G7404 SR-63/65 Rumble Strips">06-1G7404 SR-63/65 Rumble Strips</option>
               <option value="06-1G8404 Tipton">06-1G8404 Tipton</option>
@@ -398,7 +390,7 @@
           <input id="paymentOther" name="paymentOther" type="text" placeholder="Enter payment details" class="hidden" />
         </div>
 
-        <!-- Optional fields -->
+        <!-- Notes -->
         <div>
           <label for="notes">Notes</label>
           <textarea id="notes" name="notes" placeholder="Optional: cost code, reason, who approved, etc."></textarea>
@@ -431,7 +423,8 @@
 
   <script>
     // ====== CONFIG ======
-    // Replace with your real serverless endpoint in Step 3
+    // Use your Vercel endpoint here:
+    // const SUBMIT_ENDPOINT = "https://expense-intake-backend.vercel.app/api/submit-expense";
     const SUBMIT_ENDPOINT = "https://expense-intake-backend.vercel.app/api/submit-expense";
 
     // ====== HELPERS ======
@@ -463,20 +456,21 @@
       return `${yyyy}-${mm}-${dd}`;
     }
 
+    function resetPills(){
+      document.querySelectorAll(".pill[data-pay]").forEach(b => b.setAttribute("aria-pressed", "false"));
+    }
+
     // ====== INIT ======
     (function init(){
-      // Default date to today
       $("expenseDate").value = todayISO();
 
-      // Autofill from URL params (supports project + user)
-      // Example QR URL: https://yourdomain.com/expense.html?project=06-1G8404%20Tipton&user=JG
+      // Autofill from URL params
+      // Example: https://.../index.html?project=06-1G8404%20Tipton&user=PG
       const projectParam = getParam("project");
       const userParam = getParam("user");
-
       if (userParam) $("submittedBy").value = userParam;
 
       if (projectParam){
-        // If the project exists in the dropdown, select it and lock the control.
         const projectSelect = $("project");
         const optionExists = Array.from(projectSelect.options).some(o => o.value === projectParam);
 
@@ -499,7 +493,6 @@
       const file = $("receipt").files && $("receipt").files[0];
       if (!file) return;
 
-      // Preview
       const url = URL.createObjectURL(file);
       $("previewImg").src = url;
       $("preview").style.display = "block";
@@ -518,18 +511,15 @@
       if (!isOther) $("projectOther").value = "";
     });
 
-    // Payment pills
+    // Payment pills (single-select)
     document.querySelectorAll(".pill[data-pay]").forEach(btn => {
       btn.addEventListener("click", () => {
         clearError();
-
-        // Toggle pressed state (single-select)
-        document.querySelectorAll(".pill[data-pay]").forEach(b => b.setAttribute("aria-pressed", "false"));
+        resetPills();
         btn.setAttribute("aria-pressed", "true");
 
         const value = btn.getAttribute("data-pay");
         $("paymentMethod").value = value;
-        $("paymentMethod").classList.add("hidden"); // remains hidden but filled
 
         const isOther = value === "Other";
         $("paymentOther").classList.toggle("hidden", !isOther);
@@ -544,20 +534,20 @@
       const receipt = $("receipt").files && $("receipt").files[0];
       if (!receipt) return "Please add a receipt photo to continue.";
 
-      const project = $("project").disabled ? $("project").value : $("project").value;
-      if (!project) return "Please select a project.";
+      const projectValue = $("project").disabled ? $("project").value : $("project").value;
+      if (!projectValue) return "Please select a project.";
 
-      if (project === "Other" && !$("projectOther").value.trim()){
+      if (projectValue === "Other" && !$("projectOther").value.trim()){
         return "Please enter the project name.";
       }
 
       const category = $("category").value;
       if (!category) return "Please select a category.";
 
-      const vendor = $("vendor").value;
-      if (!vendor) return "Please select a vendor.";
+      const vendorValue = $("vendor").value;
+      if (!vendorValue) return "Please select a vendor.";
 
-      if (vendor === "Other" && !$("vendorOther").value.trim()){
+      if (vendorValue === "Other" && !$("vendorOther").value.trim()){
         return "Please enter the vendor name.";
       }
 
@@ -593,11 +583,9 @@
       try{
         const receiptFile = $("receipt").files[0];
 
-        // Prepare payload as multipart/form-data so the backend can receive the image
         const fd = new FormData();
         fd.append("receipt", receiptFile);
 
-        // Normalize fields
         const projectValue = $("project").disabled ? $("project").value : $("project").value;
         const projectFinal = (projectValue === "Other") ? $("projectOther").value.trim() : projectValue;
 
@@ -617,11 +605,7 @@
         fd.append("submittedBy", $("submittedBy").value || "");
         fd.append("source", $("source").value);
 
-        // POST to your serverless endpoint (Step 3 will write to Notion)
-        const res = await fetch(SUBMIT_ENDPOINT, {
-          method: "POST",
-          body: fd
-        });
+        const res = await fetch(SUBMIT_ENDPOINT, { method: "POST", body: fd });
 
         if (!res.ok){
           let msg = "Submission failed. Please try again.";
@@ -632,8 +616,9 @@
           throw new Error(msg);
         }
 
-        // Success UI
+        // Success UI: hide BOTH header + form
         $("expenseForm").classList.add("hidden");
+        $("formHeader").classList.add("hidden");
         $("successBox").style.display = "block";
 
       }catch(ex){
@@ -644,19 +629,21 @@
       }
     });
 
-    // Submit another
+    // ====== SUBMIT ANOTHER ======
     $("submitAnotherBtn").addEventListener("click", () => {
-      // Reset form but keep project if locked via QR
+      // Keep project if locked via QR
       const lockedProject = $("project").disabled ? $("project").value : "";
 
       $("expenseForm").reset();
       clearError();
+
+      // Reset UI bits
       $("preview").style.display = "none";
       $("successBox").style.display = "none";
       $("expenseForm").classList.remove("hidden");
+      $("formHeader").classList.remove("hidden");
 
-      // Reset payment pills
-      document.querySelectorAll(".pill[data-pay]").forEach(b => b.setAttribute("aria-pressed", "false"));
+      resetPills();
       $("paymentMethod").value = "";
       $("paymentOther").classList.add("hidden");
       $("vendorOther").classList.add("hidden");
