@@ -7,15 +7,15 @@
   <title>Archer Civil Construction LLC – Expense Submission</title>
 
   <!-- App / browser icons -->
-  <!-- Put archer_icon.png in the SAME folder as index.html -->
-  <link rel="icon" type="image/png" href="archer_icon.png?v=1">
-  <link rel="apple-touch-icon" href="archer_icon.png?v=1">
+  <link rel="icon" type="image/png" href="archer_icon.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="archer_icon.png?v=2">
   <meta name="apple-mobile-web-app-title" content="Expense">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <style>
     :root{
+      /* Archer logo accents */
       --archer-blue: #01017C;
       --archer-gray: #7A7A7D;
 
@@ -29,6 +29,11 @@
       --tap: 52px;
       --pad: 14px;
       --gap: 12px;
+
+      /* Field response size: match the "Upload Photo" button text */
+      /* iOS Safari zooms inputs if font-size < 16px, so keep at 16px */
+      --field-font-size: 16px;
+      --button-font-size: 16px;
     }
 
     *{ box-sizing: border-box; }
@@ -49,8 +54,13 @@
       width:100%;
       max-width:100%;
       text-align:left;
+
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
                    "Liberation Mono", "Courier New", monospace;
+
+      /* Force field response size to match Upload Photo button */
+      font-size: var(--field-font-size);
+      line-height: 1.25;
     }
 
     /* Unified geometry for inputs */
@@ -63,7 +73,6 @@
       border-radius: 12px;
       border: 1px solid var(--border);
       padding: 0 var(--pad);
-      font-size: 1rem;
       background: #fff;
       color: var(--text);
       outline: none;
@@ -96,6 +105,7 @@
       line-height: var(--tap);
       text-align: left;
       background-clip: padding-box;
+      font-size: var(--field-font-size);
     }
     input[type="date"]::-webkit-date-and-time-value{
       height: var(--tap);
@@ -104,6 +114,7 @@
       padding: 0;
       text-align: left;
       display: block;
+      font-size: var(--field-font-size);
     }
     input[type="date"]::-webkit-calendar-picker-indicator{
       margin: 0;
@@ -212,7 +223,11 @@
       border-radius: 14px;
       border: 1px solid rgba(1,1,124,.35);
       padding: 0 14px;
-      font-size: 1rem;
+
+      /* Match the field response sizing */
+      font-size: var(--button-font-size);
+      line-height: 1.2;
+
       cursor: pointer;
       background: #fff;
       color: var(--archer-blue);
@@ -221,6 +236,7 @@
       justify-content:center;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
     .btn:active{ transform: translateY(1px); }
@@ -247,7 +263,7 @@
       height: 46px;
       padding: 0 12px;
       border-radius: 999px;
-      font-size: .98rem;
+      font-size: var(--button-font-size);
       cursor: pointer;
       display:inline-flex;
       align-items:center;
