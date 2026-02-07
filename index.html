@@ -6,9 +6,16 @@
   <meta name="theme-color" content="#01017C" />
   <title>Archer Civil Construction LLC – Expense Submission</title>
 
+  <!-- App / browser icons -->
+  <!-- Put archer_icon.png in the SAME folder as index.html -->
+  <link rel="icon" type="image/png" href="archer_icon.png?v=1">
+  <link rel="apple-touch-icon" href="archer_icon.png?v=1">
+  <meta name="apple-mobile-web-app-title" content="Expense">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
   <style>
     :root{
-      /* Archer logo accents */
       --archer-blue: #01017C;
       --archer-gray: #7A7A7D;
 
@@ -36,14 +43,12 @@
       text-rendering: optimizeLegibility;
     }
 
-    /* Make iPhone/iPad form controls consistent */
+    /* iPhone/iPad consistency + field response font */
     input, select, textarea{
       display:block;
       width:100%;
       max-width:100%;
       text-align:left;
-
-      /* Field response font */
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
                    "Liberation Mono", "Courier New", monospace;
     }
@@ -83,18 +88,18 @@
       box-shadow: 0 0 0 4px rgba(1,1,124,.12);
     }
 
-    /* iOS date input: left align + vertical center */
+    /* iOS date: left align + vertical center */
     input[type="date"]{
       -webkit-appearance: none;
       appearance: none;
-      padding: 0 var(--pad);     /* remove vertical padding */
-      line-height: var(--tap);   /* center baseline */
+      padding: 0 var(--pad);
+      line-height: var(--tap);
       text-align: left;
       background-clip: padding-box;
     }
     input[type="date"]::-webkit-date-and-time-value{
       height: var(--tap);
-      line-height: var(--tap);   /* vertically center text */
+      line-height: var(--tap);
       margin: 0;
       padding: 0;
       text-align: left;
@@ -137,8 +142,6 @@
       font-size: 1.15rem;
       color: var(--archer-blue);
       margin: 0 0 6px;
-
-      /* Headings stay normal font */
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
@@ -268,7 +271,6 @@
       background:#fff;
     }
 
-    /* whitespace for revealed "Other" inputs */
     .otherInput{ margin-top: 10px; }
 
     .error{
@@ -613,7 +615,6 @@
 
       try{
         const receiptFile = $("receipt").files[0];
-
         const fd = new FormData();
         fd.append("receipt", receiptFile);
 
