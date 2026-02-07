@@ -21,6 +21,7 @@
 
       --tap: 52px;
       --pad: 14px;
+      --gap: 12px;
     }
 
     *{ box-sizing: border-box; }
@@ -33,6 +34,65 @@
       line-height: 1.25;
       -webkit-text-size-adjust: 100%;
       text-rendering: optimizeLegibility;
+    }
+
+    /* iOS/iPadOS: prevent weird scaling and align form controls consistently */
+    input, select, textarea{
+      display:block;
+      width:100%;
+      max-width:100%;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                   "Liberation Mono", "Courier New", monospace;
+      text-align:left;
+    }
+
+    /* iOS date input alignment fixes */
+    input[type="date"]{
+      -webkit-appearance: none;
+      appearance: none;
+      text-align: left;
+      padding-left: var(--pad);
+      padding-right: var(--pad);
+      line-height: 1.2;
+      background-clip: padding-box;
+    }
+    input[type="date"]::-webkit-date-and-time-value{
+      text-align:left;
+    }
+
+    /* iOS: ensure all controls share identical geometry */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea{
+      height: var(--tap);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 0 var(--pad);
+      font-size: 1rem;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea{
+      min-height: 110px;
+      height: auto;
+      padding: 12px var(--pad);
+      resize: vertical;
+    }
+
+    input[type="number"]{ appearance: textfield; }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(1,1,124,.55);
+      box-shadow: 0 0 0 4px rgba(1,1,124,.12);
     }
 
     .wrap{
@@ -75,13 +135,14 @@
       font-size: .95rem;
     }
 
-    .grid{ display:grid; gap: 12px; }
+    .grid{ display:grid; gap: var(--gap); }
 
     label{
       display:block;
       font-size: .92rem;
       margin: 0 0 6px;
       color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     .hint{
@@ -89,47 +150,13 @@
       margin-top: 6px;
       color: var(--muted);
       font-size: .86rem;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select,
-    textarea{
-      width: 100%;
-      height: var(--tap);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 0 var(--pad);
-      font-size: 1rem;
-      background: #fff;
-      color: var(--text);
-      outline: none;
-    }
-
-    textarea{
-      min-height: 92px;
-      height: auto;
-      padding: 12px var(--pad);
-      resize: vertical;
-    }
-
-    input[type="number"]{ appearance: textfield; }
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button{
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    input:focus, select:focus, textarea:focus{
-      border-color: rgba(1,1,124,.55);
-      box-shadow: 0 0 0 4px rgba(1,1,124,.12);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     .row{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: var(--gap);
     }
     @media (max-width: 520px){
       .row{ grid-template-columns: 1fr; }
@@ -145,6 +172,7 @@
       border: 1px solid rgba(1,1,124,.28);
       background: rgba(1,1,124,.06);
       vertical-align: middle;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     .photoBox{
@@ -175,6 +203,7 @@
       justify-content:center;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
     .btn:active{ transform: translateY(1px); }
 
@@ -207,6 +236,7 @@
       justify-content:center;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
     .pill[aria-pressed="true"]{
       background: rgba(1,1,124,.10);
@@ -223,6 +253,11 @@
       background:#fff;
     }
 
+    /* Ensures whitespace when "Other" inputs appear */
+    .otherInput{
+      margin-top: 10px;
+    }
+
     .error{
       display:none;
       border-left: 4px solid #b91c1c;
@@ -232,6 +267,7 @@
       border-radius: 12px;
       margin: 10px 0 0;
       font-size: .95rem;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     .success{
@@ -251,6 +287,7 @@
       justify-content:center;
       color: var(--archer-blue);
       font-size: 34px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     .fineprint{
@@ -258,6 +295,7 @@
       color: var(--archer-gray);
       font-size: .86rem;
       text-align: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
 
     .hidden{ display:none !important; }
@@ -267,26 +305,23 @@
 <body>
   <main class="wrap">
     <section class="brand" aria-label="Archer Civil Construction LLC">
-      <!-- Put archer_logo.png in the same folder as this HTML, or update the src to a hosted path -->
       <img class="logo" src="archer_logo.png" alt="Archer Civil Construction LLC logo">
     </section>
 
     <section class="card" id="formCard">
-      <!-- Header block (will be hidden on success) -->
       <div id="formHeader">
-        <p class="title"><strong>Expense submission</strong></p>
-        <p class="subtitle">Take a receipt photo, pick a few items, and submit.</p>
+        <p class="title"><strong>Expense Submission</strong></p>
+        <p class="subtitle">Upload photo, complete form, and submit.</p>
       </div>
 
       <form id="expenseForm" class="grid" novalidate>
-        <!-- Receipt Photo -->
         <div class="photoBox">
           <label for="receipt">
             Receipt photo <span class="requiredTag">Required</span>
           </label>
 
           <div class="photoActions">
-            <button type="button" class="btn btnGhost" id="takePhotoBtn">Take / Choose photo</button>
+            <button type="button" class="btn btnGhost" id="takePhotoBtn">Upload Photo</button>
             <span class="hint">On iPhone, this opens the camera. On Android, camera or gallery.</span>
           </div>
 
@@ -305,7 +340,6 @@
           </div>
         </div>
 
-        <!-- Project + Category -->
         <div class="row">
           <div>
             <label for="project">
@@ -319,7 +353,7 @@
               <option value="Road 64 Improvements">Road 64 Improvements</option>
               <option value="Other">Other</option>
             </select>
-            <input id="projectOther" name="projectOther" type="text" placeholder="Enter project name" class="hidden" />
+            <input id="projectOther" name="projectOther" type="text" placeholder="Enter project name" class="hidden otherInput" />
           </div>
 
           <div>
@@ -340,7 +374,6 @@
           </div>
         </div>
 
-        <!-- Vendor -->
         <div>
           <label for="vendor">
             Vendor <span class="requiredTag">Required</span>
@@ -355,10 +388,9 @@
             <option value="Rental Company">Rental Company</option>
             <option value="Other">Other</option>
           </select>
-          <input id="vendorOther" name="vendorOther" type="text" placeholder="Enter vendor name" class="hidden" />
+          <input id="vendorOther" name="vendorOther" type="text" placeholder="Enter vendor name" class="hidden otherInput" />
         </div>
 
-        <!-- Amount + Date -->
         <div class="row">
           <div>
             <label for="amount">
@@ -375,7 +407,6 @@
           </div>
         </div>
 
-        <!-- Payment Method -->
         <div>
           <label>
             Payment method <span class="requiredTag">Required</span>
@@ -387,23 +418,20 @@
             <button type="button" class="pill" data-pay="Other" aria-pressed="false">Other</button>
           </div>
           <input id="paymentMethod" name="paymentMethod" type="text" class="hidden" required />
-          <input id="paymentOther" name="paymentOther" type="text" placeholder="Enter payment details" class="hidden" />
+          <input id="paymentOther" name="paymentOther" type="text" placeholder="Enter payment details" class="hidden otherInput" />
         </div>
 
-        <!-- Notes -->
         <div>
           <label for="notes">Notes</label>
-          <textarea id="notes" name="notes" placeholder="Optional: cost code, reason, who approved, etc."></textarea>
+          <textarea id="notes" name="notes" placeholder="Include employee name. Optional: cost code, reason, who approved, etc."></textarea>
+          <span class="hint">Include employee name in Notes.</span>
         </div>
 
-        <!-- Hidden autofill fields -->
         <input type="hidden" id="submittedBy" name="submittedBy" value="" />
         <input type="hidden" id="source" name="source" value="qr-html" />
 
-        <!-- Error -->
         <div class="error" id="errorBox" role="alert"></div>
 
-        <!-- Submit -->
         <button type="submit" class="btn btnPrimary" id="submitBtn">Submit</button>
 
         <div class="fineprint">
@@ -411,7 +439,6 @@
         </div>
       </form>
 
-      <!-- Success screen -->
       <div class="success" id="successBox" aria-live="polite">
         <div class="check">✔</div>
         <p class="title"><strong>Expense submitted</strong></p>
@@ -422,12 +449,8 @@
   </main>
 
   <script>
-    // ====== CONFIG ======
-    // Use your Vercel endpoint here:
-    // const SUBMIT_ENDPOINT = "https://expense-intake-backend.vercel.app/api/submit-expense";
     const SUBMIT_ENDPOINT = "https://expense-intake-backend.vercel.app/api/submit-expense";
 
-    // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
 
     function getParam(name){
@@ -460,12 +483,9 @@
       document.querySelectorAll(".pill[data-pay]").forEach(b => b.setAttribute("aria-pressed", "false"));
     }
 
-    // ====== INIT ======
     (function init(){
       $("expenseDate").value = todayISO();
 
-      // Autofill from URL params
-      // Example: https://.../index.html?project=06-1G8404%20Tipton&user=PG
       const projectParam = getParam("project");
       const userParam = getParam("user");
       if (userParam) $("submittedBy").value = userParam;
@@ -485,7 +505,6 @@
       }
     })();
 
-    // ====== RECEIPT PHOTO ======
     $("takePhotoBtn").addEventListener("click", () => $("receipt").click());
 
     $("receipt").addEventListener("change", () => {
@@ -498,7 +517,6 @@
       $("preview").style.display = "block";
     });
 
-    // ====== OTHER FIELDS LOGIC ======
     $("vendor").addEventListener("change", () => {
       const isOther = $("vendor").value === "Other";
       $("vendorOther").classList.toggle("hidden", !isOther);
@@ -511,7 +529,6 @@
       if (!isOther) $("projectOther").value = "";
     });
 
-    // Payment pills (single-select)
     document.querySelectorAll(".pill[data-pay]").forEach(btn => {
       btn.addEventListener("click", () => {
         clearError();
@@ -527,7 +544,6 @@
       });
     });
 
-    // ====== VALIDATION ======
     function validate(){
       clearError();
 
@@ -567,7 +583,6 @@
       return "";
     }
 
-    // ====== SUBMIT ======
     $("expenseForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -616,7 +631,7 @@
           throw new Error(msg);
         }
 
-        // Success UI: hide BOTH header + form
+        /* Success UI: remove header + form */
         $("expenseForm").classList.add("hidden");
         $("formHeader").classList.add("hidden");
         $("successBox").style.display = "block";
@@ -629,15 +644,12 @@
       }
     });
 
-    // ====== SUBMIT ANOTHER ======
     $("submitAnotherBtn").addEventListener("click", () => {
-      // Keep project if locked via QR
       const lockedProject = $("project").disabled ? $("project").value : "";
 
       $("expenseForm").reset();
       clearError();
 
-      // Reset UI bits
       $("preview").style.display = "none";
       $("successBox").style.display = "none";
       $("expenseForm").classList.remove("hidden");
