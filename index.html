@@ -323,21 +323,23 @@
     }
 
     .fineprint{
-      margin-top: 10px;
+      margin-top: 14px;
+      text-align: center;
       font-size: .86rem;
-      text-align: center;   /* center the content */
+      color: var(--muted); /* gray instruction text */
+      line-height: 1.4;
     }
     
     .fineprint a{
-      display: inline-block; /* ensures proper tap target */
-      color: var(--archer-blue);
+      color: var(--archer-blue); /* blue phone number */
       text-decoration: none;
       font-weight: 600;
+      white-space: nowrap; /* prevents line break on number */
     }
     
     .fineprint a:active{
       opacity: 0.7;
-}
+    }
 
     .hidden{ display:none !important; }
   </style>
@@ -478,11 +480,13 @@
 
         <button type="submit" class="btn btnPrimary" id="submitBtn">Submit</button>
 
-     <div class="fineprint">
-       <a href="tel:+15593721838" aria-label="Call Main Office">
-         (559) 372-1838
-       </a>
-     </div>
+        <div class="fineprint">
+          If you experience any issues with this form, please call&nbsp;
+          <a href="tel:+15593721838" aria-label="Call Main Office">
+            (559) 372-1838
+          </a>
+        </div>
+
       </form>
 
       <div class="success" id="successBox" aria-live="polite">
